@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concept Design Baku — İnteryer Dizaynı, Mebel, Təmir</title>
+<meta name="description" content="Concept Design Baku — Bakı. İnteryer dizaynı, fərdi mebel istehsalı və açar təslim mənzil təmiri üzrə tam dövrəli studiya.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+/* ============================================
+   Concept Design Baku — Design Tokens
+   Palette: near-black charcoal, aged gold, deep
+   burgundy (from the studio's own marble/bath
+   renders), warm plaster cream, stone grey text.
+   Display: Fraunces (high-contrast, characterful
+   serif — echoes the carved cornices in the
+   studio's classical interiors).
+   Body: Manrope (quiet, geometric, gets out of
+   the way).
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700&display=swap');
+
+:root{
+  --bg:        #3B2A1E;
+  --bg-alt:    #4A3526;
+  --cream:     #F3E9DA;
+  --cream-dim: #D9C5AE;
+  --gold:      #C99A4B;
+  --gold-soft: #E6C788;
+  --burgundy:  #7A2430;
+  --burgundy-soft:#9A3540;
+  --stone:     #B49A80;
+  --line:      rgba(243,233,218,0.14);
+
+  --display: 'Fraunces', serif;
+  --body: 'Manrope', sans-serif;
+
+  --container: 1240px;
+  --pad: clamp(20px, 5vw, 64px);
+
+  --radius-sm: 14px;
+  --radius-md: 22px;
+  --radius-lg: 32px;
+  --shadow-soft: 0 18px 40px rgba(20,12,6,0.35), 0 2px 8px rgba(20,12,6,0.25);
+  --shadow-press: inset 0 2px 6px rgba(20,12,6,0.3), inset 0 -2px 6px rgba(255,235,210,0.05);
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--cream);
+  font-family:var(--body);
+  font-weight:400;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%; display:block;}
+a{color:inherit; text-decoration:none;}
+ul{list-style:none;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+}
+
+::selection{background:var(--gold); color:var(--bg);}
+
+.container{
+  max-width:var(--container);
+  margin:0 auto;
+  padding-left:var(--pad);
+  padding-right:var(--pad);
+}
+
+.eyebrow{
+  font-family:var(--body);
+  font-size:12.5px;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--gold-soft);
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.eyebrow::before{
+  content:'';
+  width:28px; height:1px;
+  background:var(--gold);
+  display:inline-block;
+}
+
+h1,h2,h3,h4{
+  font-family:var(--display);
+  font-weight:500;
+  letter-spacing:-0.01em;
+  color:var(--cream);
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:3px;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:var(--body);
+  font-weight:600;
+  font-size:14px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  padding:16px 30px;
+  border:1px solid var(--gold);
+  border-radius:999px;
+  background:transparent;
+  color:var(--cream);
+  cursor:pointer;
+  box-shadow:var(--shadow-soft);
+  transition:background .35s ease, color .35s ease, border-color .35s ease, transform .25s ease, box-shadow .25s ease;
+  white-space:nowrap;
+}
+.btn:hover{background:var(--gold); color:var(--bg); transform:translateY(-3px); box-shadow:0 22px 44px rgba(20,12,6,0.4);}
+.btn:active{transform:translateY(0); box-shadow:var(--shadow-press);}
+.btn-solid{background:linear-gradient(160deg, var(--gold-soft), var(--gold)); color:var(--bg); border-color:transparent;}
+.btn-solid:hover{background:linear-gradient(160deg, var(--gold-soft), var(--gold-soft)); border-color:transparent;}
+.btn-ghost{border-color:var(--line); color:var(--cream-dim); box-shadow:none;}
+.btn-ghost:hover{border-color:var(--gold); color:var(--cream); background:transparent; box-shadow:var(--shadow-soft);}
+
+/* ---------- Header / Nav ---------- */
+.site-header{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:200;
+  padding:22px 0;
+  transition:background .4s ease, padding .4s ease, border-color .4s ease;
+  border-bottom:1px solid transparent;
+}
+.site-header.scrolled{
+  background:#3B2A1E;
+  padding:14px 0;
+  border-bottom:1px solid var(--line);
+  box-shadow:0 10px 30px rgba(20,12,6,0.25);
+}
+.site-header .container{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+.logo{
+  font-family:var(--display);
+  font-size:21px;
+  letter-spacing:0.02em;
+  display:flex;
+  flex-direction:column;
+  line-height:1.05;
+}
+.logo span{
+  font-family:var(--body);
+  font-size:9.5px;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:var(--gold-soft);
+  font-weight:600;
+  margin-top:4px;
+}
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:38px;
+  font-size:13.5px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  font-weight:600;
+}
+.nav-links a{
+  position:relative;
+  color:var(--cream-dim);
+  transition:color .25s ease;
+  padding:4px 0;
+}
+.nav-links a::after{
+  content:'';
+  position:absolute; left:0; bottom:-2px;
+  width:0; height:1px;
+  background:var(--gold);
+  transition:width .3s ease;
+}
+.nav-links a:hover, .nav-links a.active{color:var(--cream);}
+.nav-links a:hover::after, .nav-links a.active::after{width:100%;}
+
+.nav-right{display:flex; align-items:center; gap:26px;}
+
+.lang-switch{
+  display:flex;
+  align-items:center;
+  gap:2px;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.04em;
+}
+.lang-switch button{
+  background:none; border:none; cursor:pointer;
+  color:var(--stone);
+  padding:6px 8px;
+  font-family:var(--body);
+  font-weight:700;
+  font-size:12px;
+  transition:color .2s ease;
+}
+.lang-switch button.active{color:var(--gold-soft);}
+.lang-switch button:hover{color:var(--cream);}
+.lang-switch .div{color:var(--line);}
+
+.nav-toggle{
+  display:none;
+  width:26px; height:18px;
+  position:relative;
+  background:none; border:none; cursor:pointer;
+}
+.nav-toggle span{
+  position:absolute; left:0; right:0; height:1px;
+  background:var(--cream);
+  transition:transform .3s ease, opacity .3s ease;
+}
+.nav-toggle span:nth-child(1){top:0;}
+.nav-toggle span:nth-child(2){top:8px;}
+.nav-toggle span:nth-child(3){top:16px;}
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  padding-top:120px;
+  background:
+    linear-gradient(180deg, rgba(59,42,30,0.55) 0%, rgba(59,42,30,0.55) 100%),
+    radial-gradient(ellipse at 75% 30%, rgba(110,26,38,0.28), transparent 55%),
+    url('https://images.unsplash.com/photo-1600210492493-0946911123ea?q=80&w=1800&auto=format&fit=crop') center/cover no-repeat;
+  overflow:hidden;
+}
+.hero::after{
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(100deg, rgba(59,42,30,0.94) 18%, rgba(59,42,30,0.55) 48%, rgba(59,42,30,0.25) 70%);
+  pointer-events:none;
+}
+.hero .container{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:minmax(0,640px) 1fr;
+  align-items:center;
+  gap:40px;
+  width:100%;
+}
+.hero-blueprint{
+  position:absolute;
+  top:50%; right:6%;
+  transform:translateY(-50%);
+  width:min(46vw, 560px);
+  opacity:0.5;
+  z-index:1;
+  pointer-events:none;
+}
+.hero-blueprint path{
+  fill:none;
+  stroke:var(--gold-soft);
+  stroke-width:1;
+  stroke-dasharray:2400;
+  stroke-dashoffset:2400;
+  animation:draw 3.6s ease forwards 0.4s;
+}
+@keyframes draw{ to{ stroke-dashoffset:0; } }
+
+.hero-copy{position:relative;}
+.hero-copy .eyebrow{margin-bottom:26px;}
+.hero h1{
+  font-size:clamp(40px, 5.4vw, 72px);
+  line-height:1.05;
+  font-weight:500;
+}
+.hero h1 em{
+  font-style:italic;
+  font-weight:400;
+  color:var(--gold-soft);
+}
+.hero p.lead{
+  margin-top:26px;
+  max-width:480px;
+  color:var(--cream-dim);
+  font-size:17px;
+  line-height:1.75;
+}
+.hero-cta{
+  margin-top:42px;
+  display:flex;
+  align-items:center;
+  gap:22px;
+  flex-wrap:wrap;
+}
+.hero-stats{
+  margin-top:64px;
+  display:flex;
+  gap:48px;
+  padding-top:28px;
+  border-top:1px solid var(--line);
+  max-width:520px;
+}
+.hero-stats div strong{
+  font-family:var(--display);
+  font-size:28px;
+  font-weight:500;
+  color:var(--gold-soft);
+  display:block;
+  font-variant-numeric:tabular-nums;
+}
+.hero-stats div span{
+  font-size:12px;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  color:var(--stone);
+}
+
+/* ---------- Hero entrance animation ---------- */
+@keyframes heroFadeUp{
+  from{opacity:0; transform:translateY(22px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.hero-copy .eyebrow,
+.hero h1,
+.hero p.lead,
+.hero-cta,
+.hero-stats{
+  opacity:0;
+  animation:heroFadeUp 0.9s cubic-bezier(.22,.8,.32,1) forwards;
+}
+.hero-copy .eyebrow{animation-delay:0.15s;}
+.hero h1{animation-delay:0.32s;}
+.hero p.lead{animation-delay:0.5s;}
+.hero-cta{animation-delay:0.68s;}
+.hero-stats{animation-delay:0.86s;}
+
+.scroll-cue{
+  position:absolute;
+  bottom:36px; left:var(--pad);
+  z-index:3;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:11px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--stone);
+}
+.scroll-cue .line{
+  width:1px; height:38px;
+  background:linear-gradient(var(--gold), transparent);
+  animation:scrollline 2.2s ease-in-out infinite;
+}
+@keyframes scrollline{ 0%,100%{opacity:0.3;} 50%{opacity:1;} }
+
+/* ---------- Material swatch divider (signature) ---------- */
+.swatch-strip{
+  display:flex;
+  height:7px;
+  width:100%;
+  border-radius:999px;
+  overflow:hidden;
+}
+.swatch-strip span{flex:1;}
+.swatch-strip .s-gold{background:linear-gradient(90deg,var(--gold),var(--gold-soft));}
+.swatch-strip .s-burgundy{background:linear-gradient(90deg,var(--burgundy),var(--burgundy-soft));}
+.swatch-strip .s-cream{background:linear-gradient(90deg,var(--cream-dim),var(--cream));}
+
+/* ---------- Section shells ---------- */
+section{position:relative;}
+.section-pad{padding:120px 0;}
+.section-head{
+  max-width:640px;
+  margin-bottom:64px;
+}
+.section-head .eyebrow{margin-bottom:20px;}
+.section-head h2{
+  font-size:clamp(30px, 3.6vw, 46px);
+  line-height:1.15;
+}
+.section-head p{
+  margin-top:20px;
+  color:var(--cream-dim);
+  font-size:16px;
+  max-width:520px;
+}
+.section-foot{
+  margin-top:56px;
+}
+
+.bg-alt{background:var(--bg-alt);}
+
+/* ---------- About strip ---------- */
+.about{
+  display:grid;
+  grid-template-columns:0.9fr 1.1fr;
+  gap:80px;
+  align-items:center;
+}
+.about-figure{
+  position:relative;
+  aspect-ratio:4/5;
+  overflow:hidden;
+}
+.about-figure img{width:100%; height:100%; object-fit:cover;}
+.about-figure::before{
+  content:'';
+  position:absolute; inset:0;
+  border:1px solid var(--gold);
+  transform:translate(18px,18px);
+  z-index:-1;
+}
+.about-figure-wrap{position:relative;}
+.about-figure-wrap::after{
+  content:'';
+  position:absolute; inset:0;
+  border:1px solid var(--gold);
+  border-radius:var(--radius-lg);
+  transform:translate(18px,18px);
+  z-index:0;
+}
+.about-figure-wrap img{position:relative; z-index:1; width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:var(--radius-lg); box-shadow:var(--shadow-soft);}
+
+.about-copy p{color:var(--cream-dim); margin-bottom:20px; font-size:16px;}
+.about-list{margin-top:32px; display:flex; flex-direction:column; gap:18px;}
+.about-list li{
+  display:flex; align-items:baseline; gap:16px;
+  padding-bottom:18px;
+  border-bottom:1px solid var(--line);
+  font-size:15px;
+  color:var(--cream-dim);
+}
+.about-list li b{color:var(--cream); font-weight:600; font-family:var(--body);}
+
+/* ---------- Services ---------- */
+.service-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:24px;
+  background:none;
+  border:none;
+}
+.service-card{
+  background:linear-gradient(165deg, rgba(243,233,218,0.05), rgba(243,233,218,0.015));
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  padding:48px 38px;
+  position:relative;
+  transition:background .4s ease, transform .35s ease, box-shadow .35s ease;
+  min-height:340px;
+  display:flex;
+  flex-direction:column;
+  box-shadow:var(--shadow-soft);
+}
+.service-card:hover{background:rgba(243,233,218,0.07); transform:translateY(-6px);}
+.service-num{
+  font-family:var(--display);
+  font-style:italic;
+  font-size:14px;
+  color:var(--stone);
+  margin-bottom:28px;
+}
+.service-swatch{
+  width:40px; height:6px;
+  border-radius:999px;
+  margin-bottom:24px;
+}
+.service-card:nth-child(1) .service-swatch{background:var(--gold);}
+.service-card:nth-child(2) .service-swatch{background:var(--burgundy-soft);}
+.service-card:nth-child(3) .service-swatch{background:var(--cream-dim);}
+.service-card h3{font-size:24px; margin-bottom:14px; font-weight:500;}
+.service-card p{color:var(--cream-dim); font-size:14.5px; flex:1;}
+.service-card .more{
+  margin-top:24px;
+  font-size:12.5px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  font-weight:600;
+  color:var(--gold-soft);
+  display:inline-flex; align-items:center; gap:8px;
+}
+
+/* ---------- Portfolio preview grid ---------- */
+.work-grid{
+  display:grid;
+  grid-template-columns:repeat(6, 1fr);
+  grid-auto-rows:200px;
+  gap:14px;
+}
+.work-item{
+  position:relative;
+  overflow:hidden;
+  grid-column:span 2;
+  cursor:pointer;
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow-soft);
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+.work-item:hover{transform:translateY(-5px); box-shadow:0 26px 50px rgba(20,12,6,0.4);}
+.work-item.tall{grid-row:span 2;}
+.work-item img{
+  width:100%; height:100%; object-fit:cover;
+  transition:transform .7s cubic-bezier(.2,.7,.2,1), filter .5s ease;
+  filter:saturate(0.92) brightness(0.92);
+}
+.work-item:hover img{transform:scale(1.06); filter:saturate(1) brightness(1);}
+.work-item .tag{
+  position:absolute; left:0; bottom:0; right:0;
+  padding:18px 20px;
+  background:linear-gradient(0deg, rgba(59,42,30,0.92), transparent);
+  display:flex; flex-direction:column; gap:4px;
+  transform:translateY(8px);
+  opacity:0;
+  transition:opacity .35s ease, transform .35s ease;
+}
+.work-item:hover .tag{opacity:1; transform:translateY(0);}
+.work-item .tag b{font-family:var(--display); font-weight:500; font-size:17px;}
+.work-item .tag span{font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold-soft);}
+
+/* ---------- Testimonial ---------- */
+.testimonial{
+  padding:100px 0;
+  text-align:center;
+}
+.testimonial blockquote{
+  font-family:var(--display);
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(22px, 3vw, 34px);
+  line-height:1.5;
+  max-width:840px;
+  margin:0 auto;
+  color:var(--cream);
+}
+.testimonial cite{
+  display:block;
+  margin-top:30px;
+  font-style:normal;
+  font-size:13px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--stone);
+}
+
+/* ---------- CTA band ---------- */
+.cta-band{
+  padding:100px 0;
+  background:
+    linear-gradient(100deg, rgba(59,42,30,0.95), rgba(59,42,30,0.75)),
+    url('https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?q=80&w=1800&auto=format&fit=crop') center/cover;
+  text-align:center;
+}
+.cta-band h2{font-size:clamp(28px,3.6vw,44px); max-width:620px; margin:0 auto 28px;}
+.cta-band p{color:var(--cream-dim); max-width:480px; margin:0 auto 36px;}
+
+/* ---------- Footer ---------- */
+footer{
+  background:var(--bg-alt);
+  padding:80px 0 30px;
+  border-top:1px solid var(--line);
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr 1fr;
+  gap:40px;
+  padding-bottom:56px;
+}
+.footer-grid h4{
+  font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--stone); font-family:var(--body); font-weight:700;
+  margin-bottom:20px;
+}
+.footer-grid ul{display:flex; flex-direction:column; gap:12px;}
+.footer-grid ul a{color:var(--cream-dim); font-size:14.5px; transition:color .2s;}
+.footer-grid ul a:hover{color:var(--gold-soft);}
+.footer-brand .logo{margin-bottom:18px;}
+.footer-brand p{color:var(--cream-dim); font-size:14px; max-width:280px; line-height:1.7;}
+.footer-social{display:flex; gap:14px; margin-top:22px;}
+.footer-social a{
+  width:36px; height:36px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  display:flex; align-items:center; justify-content:center;
+  transition:border-color .25s, color .25s, transform .25s;
+  color:var(--cream-dim);
+  box-shadow:var(--shadow-soft);
+}
+.footer-social a:hover{border-color:var(--gold); color:var(--gold-soft); transform:translateY(-3px);}
+.footer-bottom{
+  display:flex; justify-content:space-between; align-items:center;
+  padding-top:28px; border-top:1px solid var(--line);
+  font-size:12.5px; color:var(--stone);
+  flex-wrap:wrap; gap:12px;
+}
+
+/* ---------- Page header (interior pages) ---------- */
+.page-head{
+  padding:170px 0 90px;
+  position:relative;
+  background:
+    linear-gradient(100deg, rgba(59,42,30,0.93), rgba(59,42,30,0.7)),
+    url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1800&auto=format&fit=crop') center/cover;
+}
+.page-head .eyebrow{margin-bottom:22px;}
+.page-head h1{font-size:clamp(36px,5vw,58px);}
+.page-head p{margin-top:20px; color:var(--cream-dim); max-width:540px; font-size:16px;}
+
+/* ---------- Reveal on scroll ---------- */
+.reveal{opacity:0; transform:translateY(28px); transition:opacity .8s ease, transform .8s ease;}
+.reveal.in{opacity:1; transform:none;}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1080px){
+  .about{grid-template-columns:1fr; gap:50px;}
+  .about-figure-wrap{max-width:420px;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:860px){
+  .nav-links{
+    position:fixed; top:0; right:0; bottom:0;
+    width:min(78vw, 340px);
+    background:var(--bg-alt);
+    border-radius:var(--radius-lg) 0 0 var(--radius-lg);
+    box-shadow:-20px 0 50px rgba(20,12,6,0.4);
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    gap:30px;
+    padding:0 44px;
+    transform:translateX(100%);
+    transition:transform .45s ease;
+    border-left:1px solid var(--line);
+  }
+  .nav-links.open{transform:translateX(0);}
+  .nav-toggle{display:block;}
+  .hero .container{grid-template-columns:1fr;}
+  .hero-blueprint{display:none;}
+  .hero-stats{gap:32px;}
+  .service-grid{grid-template-columns:1fr;}
+  .work-grid{grid-template-columns:repeat(2,1fr); grid-auto-rows:160px;}
+  .work-item{grid-column:span 1 !important; grid-row:span 1 !important;}
+}
+@media (max-width:560px){
+  .hero-cta{flex-direction:column; align-items:flex-start;}
+  .footer-grid{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column; align-items:flex-start;}
+}
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">Concept Design <span>Baku · Studio</span></a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html" class="active" data-i18n="nav.home">Ana Səhifə</a>
+      <a href="xidmetler.html" data-i18n="nav.services">Xidmətlər</a>
+      <a href="portfolio.html" data-i18n="nav.portfolio">Portfolio</a>
+      <a href="elaqe.html" data-i18n="nav.contact">Əlaqə</a>
+    </nav>
+
+    <div class="nav-right">
+      <div class="lang-switch">
+        <button data-lang="az">AZ</button><span class="div">/</span>
+        <button data-lang="ru">RU</button><span class="div">/</span>
+        <button data-lang="en">EN</button>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Menyu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <svg class="hero-blueprint" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M40 460 L40 60 L260 60 L260 160 L460 160 L460 460 Z"/>
+    <path d="M40 250 L260 250"/>
+    <path d="M150 60 L150 250"/>
+    <path d="M260 320 L460 320"/>
+    <path d="M360 160 L360 460"/>
+    <circle cx="90" cy="150" r="14"/>
+    <path d="M300 380 L300 460"/>
+  </svg>
+
+  <div class="container">
+    <div class="hero-copy">
+      <p class="eyebrow" data-i18n="hero.eyebrow">Concept Design Baku · Studiya</p>
+      <h1><span data-i18n="hero.title.1">Məkanı </span><em data-i18n="hero.title.em">sənətə</em><span data-i18n="hero.title.2"> çeviririk</span></h1>
+      <p class="lead" data-i18n="hero.lead">Concept Design Baku — interyer dizaynından mebel istehsalına və açar təslim təmirə qədər tam dövrəli yaradıcı studiya.</p>
+
+      <div class="hero-cta">
+        <a href="elaqe.html" class="btn btn-solid" data-i18n="hero.cta1">Layihəmizi planlaşdıraq</a>
+        <a href="portfolio.html" class="btn btn-ghost" data-i18n="hero.cta2">İşlərimizə baxın</a>
+      </div>
+
+      <div class="hero-stats">
+        <div><strong data-i18n="hero.stat1n">630+</strong><span data-i18n="hero.stat1l">Tamamlanmış paylaşım</span></div>
+        <div><strong data-i18n="hero.stat2n">6.4K</strong><span data-i18n="hero.stat2l">Məmnun izləyici</span></div>
+        <div><strong data-i18n="hero.stat3n">15+</strong><span data-i18n="hero.stat3l">İl təcrübə</span></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div class="swatch-strip"><span class="s-gold"></span><span class="s-burgundy"></span><span class="s-cream"></span></div>
+
+<!-- ===================== ABOUT ===================== -->
+<section class="section-pad">
+  <div class="container about">
+    <div class="about-figure-wrap reveal">
+      <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1000&auto=format&fit=crop" alt="Studiyanın layihələrindən nümunə interyer">
+    </div>
+    <div class="about-copy reveal">
+      <p class="eyebrow" data-i18n="about.eyebrow">Studiya Haqqında</p>
+      <h2 style="margin-top:18px; margin-bottom:24px;" data-i18n="about.title">Estetik dizaynın yeni üzü</h2>
+      <p data-i18n="about.p1">Bakının mərkəzində yerləşən studiyamız şəhərin ən tələbkar müştəriləri üçün mənzil, ofis və kommersiya məkanlarını yenidən təsəvvür edir.</p>
+      <p data-i18n="about.p2">Hər layihəyə eyni prinsiplə yanaşırıq: əvvəlcə dinləmək, sonra cızmaq, daha sonra tikmək.</p>
+      <ul class="about-list">
+        <li><b data-i18n="about.li1b">İnteryer Dizaynı —</b><span data-i18n="about.li1">konsepsiyadan 3D vizuallaşdırmaya qədər tam layihələndirmə</span></li>
+        <li><b data-i18n="about.li2b">Mebel İstehsalı —</b><span data-i18n="about.li2">fərdi sifarişlə hazırlanan mebel və dekor elementləri</span></li>
+        <li><b data-i18n="about.li3b">Mənzil Təmiri —</b><span data-i18n="about.li3">açar təslim tikinti-quraşdırma və layihə nəzarəti</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section class="section-pad bg-alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow" data-i18n="services.eyebrow">Nə Edirik</p>
+      <h2 style="margin-top:18px;" data-i18n="services.title">Üç xidmət, bir komanda</h2>
+      <p data-i18n="services.lead">Dizayndan icraya qədər bütün proses daxili komandamız tərəfindən idarə olunur.</p>
+    </div>
+  </div>
+  <div class="container" style="padding-left:0; padding-right:0; max-width:100%;">
+    <div class="container">
+      <div class="service-grid reveal">
+        <div class="service-card">
+          <span class="service-num">01</span>
+          <span class="service-swatch"></span>
+          <h3 data-i18n="s1.title">İnteryer Dizaynı</h3>
+          <p data-i18n="s1.p">Mənzil, ofis, restoran və kommersiya obyektləri üçün konsepsiya işləmələri və 3D vizuallaşdırma.</p>
+          <a href="xidmetler.html" class="more" data-i18n="service.more">Ətraflı →</a>
+        </div>
+        <div class="service-card">
+          <span class="service-num">02</span>
+          <span class="service-swatch"></span>
+          <h3 data-i18n="s2.title">Mebel Sifarişi</h3>
+          <p data-i18n="s2.p">Öz emalatxanamızda fərdi ölçü və materiallarla hazırlanan mətbəx, yataq otağı və ofis mebeli.</p>
+          <a href="xidmetler.html" class="more" data-i18n="service.more">Ətraflı →</a>
+        </div>
+        <div class="service-card">
+          <span class="service-num">03</span>
+          <span class="service-swatch"></span>
+          <h3 data-i18n="s3.title">Mənzillərin Təmiri</h3>
+          <p data-i18n="s3.p">Əsaslı təmirdən kosmetik yeniləməyə qədər tikinti-quraşdırma işləri, müəllif nəzarəti ilə.</p>
+          <a href="xidmetler.html" class="more" data-i18n="service.more">Ətraflı →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PORTFOLIO PREVIEW ===================== -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow" data-i18n="work.eyebrow">Seçilmiş Layihələr</p>
+      <h2 style="margin-top:18px;" data-i18n="work.title">Son işlərimizdən</h2>
+      <p data-i18n="work.lead">Mətbəxdən hovuz zonasına qədər — hər kateqoriyadan bir neçə nümunə.</p>
+    </div>
+
+    <div class="work-grid reveal">
+      <div class="work-item tall">
+        <img src="https://images.unsplash.com/photo-1600210492493-0946911123ea?q=80&w=900&auto=format&fit=crop" alt="Bağ yolu eksteryer dizaynı">
+        <div class="tag"><span data-i18n="work.cat1">Eksteryer</span><b data-i18n="work.t1">Bağ Yolu, Bakı</b></div>
+      </div>
+      <div class="work-item">
+        <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=900&auto=format&fit=crop" alt="Mərmər hamam otağı dizaynı">
+        <div class="tag"><span data-i18n="work.cat2">Hamam Otağı</span><b data-i18n="work.t2">Mərmər Süit</b></div>
+      </div>
+      <div class="work-item">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop" alt="Lüks foye dizaynı">
+        <div class="tag"><span data-i18n="work.cat3">Foye</span><b data-i18n="work.t3">Nəsimi Rezidensiyası</b></div>
+      </div>
+      <div class="work-item tall">
+        <img src="https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?q=80&w=900&auto=format&fit=crop" alt="Klassik tavan dizaynı">
+        <div class="tag"><span data-i18n="work.cat4">Tavan Dizaynı</span><b data-i18n="work.t4">Klassik Salon</b></div>
+      </div>
+      <div class="work-item">
+        <img src="https://images.unsplash.com/photo-1565183997392-2f6f122e5912?q=80&w=900&auto=format&fit=crop" alt="Lobi işıqlandırma detalları">
+        <div class="tag"><span data-i18n="work.cat5">İşıqlandırma</span><b data-i18n="work.t5">Lobi Detalları</b></div>
+      </div>
+      <div class="work-item">
+        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=900&auto=format&fit=crop" alt="İcraçı ofis kabineti dizaynı">
+        <div class="tag"><span data-i18n="work.cat6">Ofis</span><b data-i18n="work.t6">İcraçı Kabinet</b></div>
+      </div>
+    </div>
+
+    <div class="section-foot reveal">
+      <a href="portfolio.html" class="btn btn-ghost" data-i18n="work.viewall">Bütün layihələrə bax</a>
+    </div>
+  </div>
+</section>
+
+<div class="swatch-strip"><span class="s-cream"></span><span class="s-gold"></span><span class="s-burgundy"></span></div>
+
+<!-- ===================== TESTIMONIAL ===================== -->
+<section class="testimonial bg-alt">
+  <div class="container reveal">
+    <blockquote data-i18n="testimonial.quote">"Detallara olan diqqətləri evimizi gözlədiyimizdən qat-qat yaxşı hala gətirdi."</blockquote>
+    <cite data-i18n="testimonial.cite">— Concept Design Baku müştərisi</cite>
+  </div>
+</section>
+
+<!-- ===================== CTA BAND ===================== -->
+<section class="cta-band">
+  <div class="container reveal">
+    <h2 data-i18n="ctaband.title">Layihənizi birgə cızmağa hazırıq</h2>
+    <p data-i18n="ctaband.lead">Pulsuz ilkin məsləhət üçün bizimlə əlaqə saxlayın.</p>
+    <a href="elaqe.html" class="btn btn-solid" data-i18n="ctaband.btn">İndi Sorğu Göndər</a>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">Concept Design <span>Baku · Studio</span></div>
+        <p data-i18n="footer.about.text">Concept Design Baku — interyer dizaynı, mebel istehsalı və mənzil təmiri üzrə tam dövrəli yaradıcı studiya.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.97.24 2.43.4a4.92 4.92 0 0 1 1.77 1.15c.5.5.85 1.05 1.15 1.77.17.46.35 1.26.4 2.43.07 1.25.07 1.65.07 4.85s0 3.6-.07 4.85c-.05 1.17-.24 1.97-.4 2.43a4.93 4.93 0 0 1-1.15 1.77 4.92 4.92 0 0 1-1.77 1.15c-.46.17-1.26.35-2.43.4-1.25.07-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.97-.24-2.43-.4a4.92 4.92 0 0 1-1.77-1.15 4.93 4.93 0 0 1-1.15-1.77c-.17-.46-.35-1.26-.4-2.43C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.85c.05-1.17.24-1.97.4-2.43A4.93 4.93 0 0 1 3.82 2.95 4.92 4.92 0 0 1 5.59 1.8c.46-.17 1.26-.35 2.43-.4C9.27 1.33 9.67 1.33 12 1.33Zm0 1.8c-3.15 0-3.52 0-4.76.07-.96.04-1.48.2-1.83.34-.46.18-.79.39-1.13.74-.35.34-.56.67-.74 1.13-.14.35-.3.87-.34 1.83-.07 1.24-.07 1.61-.07 4.76s0 3.52.07 4.76c.04.96.2 1.48.34 1.83.18.46.39.79.74 1.13.34.35.67.56 1.13.74.35.14.87.3 1.83.34 1.24.07 1.61.07 4.76.07s3.52 0 4.76-.07c.96-.04 1.48-.2 1.83-.34.46-.18.79-.39 1.13-.74.35-.34.56-.67.74-1.13.14-.35.3-.87.34-1.83.07-1.24.07-1.61.07-4.76s0-3.52-.07-4.76c-.04-.96-.2-1.48-.34-1.83a3.05 3.05 0 0 0-.74-1.13 3.05 3.05 0 0 0-1.13-.74c-.35-.14-.87-.3-1.83-.34-1.24-.07-1.61-.07-4.76-.07Zm0 3.5a5.1 5.1 0 1 1 0 10.2 5.1 5.1 0 0 1 0-10.2Zm0 1.8a3.3 3.3 0 1 0 0 6.6 3.3 3.3 0 0 0 0-6.6Zm5.3-1.99a1.19 1.19 0 1 1 0 2.38 1.19 1.19 0 0 1 0-2.38Z"/></svg>
+          </a>
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 11.94 2 6.36 2 1.88 6.5 1.88 12.06c0 5.02 3.66 9.18 8.45 9.94v-7.03H7.9v-2.91h2.43V9.96c0-2.4 1.43-3.73 3.62-3.73 1.05 0 2.15.19 2.15.19v2.36h-1.21c-1.2 0-1.57.74-1.57 1.5v1.8h2.67l-.43 2.91h-2.24v7.03c4.79-.76 8.45-4.92 8.45-9.94Z"/></svg>
+          </a>
+          <a href="#" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.79-1.68-2.09-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/><path d="M12.02 2C6.5 2 2.04 6.45 2.04 11.96c0 1.86.51 3.6 1.4 5.1L2 22l5.06-1.39c1.45.79 3.12 1.24 4.9 1.24h.01c5.52 0 9.98-4.45 9.98-9.96C21.95 6.45 17.5 2 12.02 2Zm0 18.07h-.01c-1.6 0-3.16-.43-4.51-1.24l-.32-.19-3.01.83.81-2.93-.21-.3a8.13 8.13 0 0 1-1.27-4.28c0-4.5 3.66-8.16 8.17-8.16 2.18 0 4.23.85 5.77 2.4a8.1 8.1 0 0 1 2.39 5.77c0 4.5-3.67 8.1-8.16 8.1Z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4 data-i18n="footer.services.title">Xidmətlər</h4>
+        <ul>
+          <li><a href="xidmetler.html" data-i18n="footer.services.1">İnteryer Dizaynı</a></li>
+          <li><a href="xidmetler.html" data-i18n="footer.services.2">Mebel Sifarişi</a></li>
+          <li><a href="xidmetler.html" data-i18n="footer.services.3">Mənzil Təmiri</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i18n="footer.contact.title">Əlaqə</h4>
+        <ul>
+          <li><span data-i18n="footer.contact.addr">Caspian Plaza, Bakı, Azərbaycan</span></li>
+          <li><a href="tel:12345">12345</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-i18n="footer.bottom">© 2026 Concept Design Baku. Bütün hüquqlar qorunur.</span>
+      <span data-i18n="footer.credit">Sayt nümunə məzmunla hazırlanıb</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================
+   Concept Design Baku — site behaviour
+   - 3-language translation system (AZ default)
+   - sticky header state
+   - mobile nav toggle
+   - scroll-reveal for sections
+   ============================================ */
+
+const translations = {
+  az: {
+    "nav.home":"Ana Səhifə",
+    "nav.services":"Xidmətlər",
+    "nav.portfolio":"Portfolio",
+    "nav.contact":"Əlaqə",
+    "nav.cta":"Sorğu Göndər",
+
+    "hero.eyebrow":"Concept Design Baku · Studiya",
+    "hero.title.1":"Məkanı ",
+    "hero.title.em":"sənətə",
+    "hero.title.2":" çeviririk",
+    "hero.lead":"Concept Design Baku — interyer dizaynından mebel istehsalına və açar təslim təmirə qədər tam dövrəli yaradıcı studiya. Hər kvadrat metr öz hekayəsini danışır.",
+    "hero.cta1":"Layihəmizi planlaşdıraq",
+    "hero.cta2":"İşlərimizə baxın",
+    "hero.stat1n":"630+","hero.stat1l":"Tamamlanmış paylaşım",
+    "hero.stat2n":"6.4K","hero.stat2l":"Məmnun izləyici",
+    "hero.stat3n":"15+","hero.stat3l":"İl təcrübə",
+    "hero.scroll":"Aşağı sürüşdür",
+
+    "about.eyebrow":"Studiya Haqqında",
+    "about.title":"Estetik dizaynın yeni üzü",
+    "about.p1":"Bakının mərkəzində yerləşən studiyamız şəhərin ən tələbkar müştəriləri üçün mənzil, ofis və kommersiya məkanlarını yenidən təsəvvür edir. Klassikadan müasir minimalizmə qədər geniş üslub diapazonunda işləyirik.",
+    "about.p2":"Hər layihəyə eyni prinsiplə yanaşırıq: əvvəlcə dinləmək, sonra cızmaq, daha sonra tikmək. Dizaynerlərimiz, ustalarımız və mebel emalatxanamız bir komanda kimi işləyir ki, layihə eskizdən açar təslim nəticəyə qədər bir əldən çıxsın.",
+    "about.li1b":"İnteryer Dizaynı —",
+    "about.li1":"konsepsiyadan 3D vizuallaşdırmaya qədər tam layihələndirmə",
+    "about.li2b":"Mebel İstehsalı —",
+    "about.li2":"fərdi sifarişlə hazırlanan mebel və dekor elementləri",
+    "about.li3b":"Mənzil Təmiri —",
+    "about.li3":"açar təslim tikinti-quraşdırma və layihə nəzarəti",
+
+    "services.eyebrow":"Nə Edirik",
+    "services.title":"Üç xidmət, bir komanda",
+    "services.lead":"Dizayndan icraya qədər bütün proses daxili komandamız tərəfindən idarə olunur — vasitəçi yoxdur, məsuliyyət bölünmür.",
+    "s1.title":"İnteryer Dizaynı",
+    "s1.p":"Mənzil, ofis, restoran və kommersiya obyektləri üçün konsepsiya işləmələri, planlaşdırma və fotorealistik 3D vizuallaşdırma.",
+    "s2.title":"Mebel Sifarişi",
+    "s2.p":"Öz emalatxanamızda fərdi ölçü və materiallarla hazırlanan mətbəx, yataq otağı və ofis mebeli istehsalı.",
+    "s3.title":"Mənzillərin Təmiri",
+    "s3.p":"Əsaslı təmirdən kosmetik yeniləməyə qədər tikinti-quraşdırma işləri, layihə müəllif nəzarəti ilə həyata keçirilir.",
+    "service.more":"Ətraflı",
+
+    "work.eyebrow":"Seçilmiş Layihələr",
+    "work.title":"Son işlərimizdən",
+    "work.lead":"Mətbəxdən hovuz zonasına qədər — hər kateqoriyadan bir neçə nümunə.",
+    "work.cat1":"Eksteryer","work.t1":"Bağ Yolu, Bakı",
+    "work.cat2":"Hamam Otağı","work.t2":"Mərmər Süit",
+    "work.cat3":"Foye","work.t3":"Nəsimi Rezidensiyası",
+    "work.cat4":"Tavan Dizaynı","work.t4":"Klassik Salon",
+    "work.cat5":"İşıqlandırma","work.t5":"Lobi Detalları",
+    "work.cat6":"Ofis","work.t6":"İcraçı Kabinet",
+    "work.viewall":"Bütün layihələrə bax",
+
+    "testimonial.quote":"“Detallara olan diqqətləri evimizi gözlədiyimizdən qat-qat yaxşı hala gətirdi. Eskizdən son mismara qədər hər addımda yanımızda idilər.”",
+    "testimonial.cite":"— Concept Design Baku müştərisi",
+
+    "ctaband.title":"Layihənizi birgə cızmağa hazırıq",
+    "ctaband.lead":"Pulsuz ilkin məsləhət üçün bizimlə əlaqə saxlayın — büdcənizə və zövqünüzə uyğun konsepsiya hazırlayaq.",
+    "ctaband.btn":"İndi Sorğu Göndər",
+
+    "footer.about.title":"Studiya",
+    "footer.about.text":"Concept Design Baku — interyer dizaynı, mebel istehsalı və mənzil təmiri üzrə tam dövrəli yaradıcı studiya.",
+    "footer.nav.title":"Naviqasiya",
+    "footer.services.title":"Xidmətlər",
+    "footer.services.1":"İnteryer Dizaynı",
+    "footer.services.2":"Mebel Sifarişi",
+    "footer.services.3":"Mənzil Təmiri",
+    "footer.contact.title":"Əlaqə",
+    "footer.contact.addr":"Caspian Plaza, Bakı, Azərbaycan",
+    "footer.bottom":"© 2026 Concept Design Baku. Bütün hüquqlar qorunur.",
+    "footer.credit":"Sayt nümunə məzmunla hazırlanıb"
+  },
+
+  ru: {
+    "nav.home":"Главная",
+    "nav.services":"Услуги",
+    "nav.portfolio":"Портфолио",
+    "nav.contact":"Контакты",
+    "nav.cta":"Оставить заявку",
+
+    "hero.eyebrow":"Concept Design Baku · Студия",
+    "hero.title.1":"Превращаем пространство в ",
+    "hero.title.em":"искусство",
+    "hero.title.2":"",
+    "hero.lead":"Concept Design Baku — творческая студия полного цикла: от дизайна интерьера до изготовления мебели и ремонта «под ключ». Каждый квадратный метр рассказывает свою историю.",
+    "hero.cta1":"Запланировать проект",
+    "hero.cta2":"Смотреть работы",
+    "hero.stat1n":"630+","hero.stat1l":"Завершённых публикаций",
+    "hero.stat2n":"6.4K","hero.stat2l":"Довольных подписчиков",
+    "hero.stat3n":"15+","hero.stat3l":"Лет опыта",
+    "hero.scroll":"Прокрутите вниз",
+
+    "about.eyebrow":"О студии",
+    "about.title":"Новое лицо эстетического дизайна",
+    "about.p1":"Наша студия в центре Баку переосмысляет квартиры, офисы и коммерческие пространства для самых требовательных клиентов города. Работаем в широком диапазоне стилей — от классики до современного минимализма.",
+    "about.p2":"К каждому проекту подходим по одному принципу: сначала слушать, затем проектировать, потом строить. Дизайнеры, мастера и наша мебельная мастерская работают как единая команда — от эскиза до сдачи объекта под ключ.",
+    "about.li1b":"Дизайн интерьера —",
+    "about.li1":"полное проектирование от концепции до 3D-визуализации",
+    "about.li2b":"Изготовление мебели —",
+    "about.li2":"мебель и предметы декора по индивидуальным размерам",
+    "about.li3b":"Ремонт квартир —",
+    "about.li3":"строительно-монтажные работы под ключ с авторским надзором",
+
+    "services.eyebrow":"Чем мы занимаемся",
+    "services.title":"Три услуги, одна команда",
+    "services.lead":"Весь процесс — от дизайна до реализации — ведёт наша внутренняя команда: без посредников и размытой ответственности.",
+    "s1.title":"Дизайн интерьера",
+    "s1.p":"Концепции, планировки и фотореалистичная 3D-визуализация для квартир, офисов, ресторанов и коммерческих объектов.",
+    "s2.title":"Изготовление мебели",
+    "s2.p":"Кухонная, спальная и офисная мебель, изготовленная в нашей мастерской по индивидуальным размерам и материалам.",
+    "s3.title":"Ремонт квартир",
+    "s3.p":"От капитального ремонта до косметического обновления — строительные работы под авторским надзором проекта.",
+    "service.more":"Подробнее",
+
+    "work.eyebrow":"Избранные проекты",
+    "work.title":"Наши последние работы",
+    "work.lead":"От кухни до зоны бассейна — примеры из каждой категории.",
+    "work.cat1":"Экстерьер","work.t1":"Садовая дорожка, Баку",
+    "work.cat2":"Ванная комната","work.t2":"Мраморный сьют",
+    "work.cat3":"Холл","work.t3":"Резиденция Насими",
+    "work.cat4":"Дизайн потолка","work.t4":"Классический салон",
+    "work.cat5":"Освещение","work.t5":"Детали лобби",
+    "work.cat6":"Офис","work.t6":"Кабинет руководителя",
+    "work.viewall":"Смотреть все проекты",
+
+    "testimonial.quote":"«Внимание к деталям сделало наш дом намного лучше, чем мы ожидали. Они были рядом на каждом шаге — от эскиза до последнего гвоздя».",
+    "testimonial.cite":"— Клиент Concept Design Baku",
+
+    "ctaband.title":"Готовы спроектировать ваш проект вместе",
+    "ctaband.lead":"Свяжитесь с нами для бесплатной первичной консультации — подготовим концепцию под ваш бюджет и вкус.",
+    "ctaband.btn":"Оставить заявку",
+
+    "footer.about.title":"Студия",
+    "footer.about.text":"Concept Design Baku — творческая студия полного цикла: дизайн интерьера, изготовление мебели и ремонт квартир.",
+    "footer.nav.title":"Навигация",
+    "footer.services.title":"Услуги",
+    "footer.services.1":"Дизайн интерьера",
+    "footer.services.2":"Изготовление мебели",
+    "footer.services.3":"Ремонт квартир",
+    "footer.contact.title":"Контакты",
+    "footer.contact.addr":"Caspian Plaza, Баку, Азербайджан",
+    "footer.bottom":"© 2026 Concept Design Baku. Все права защищены.",
+    "footer.credit":"Сайт создан с демонстрационным контентом"
+  },
+
+  en: {
+    "nav.home":"Home",
+    "nav.services":"Services",
+    "nav.portfolio":"Portfolio",
+    "nav.contact":"Contact",
+    "nav.cta":"Get a Quote",
+
+    "hero.eyebrow":"Concept Design Baku · Studio",
+    "hero.title.1":"Turning space into ",
+    "hero.title.em":"art",
+    "hero.title.2":"",
+    "hero.lead":"Concept Design Baku is a full-cycle creative studio — from interior design to custom furniture and turnkey renovation. Every square metre tells its own story.",
+    "hero.cta1":"Plan your project",
+    "hero.cta2":"View our work",
+    "hero.stat1n":"630+","hero.stat1l":"Completed features",
+    "hero.stat2n":"6.4K","hero.stat2l":"Happy followers",
+    "hero.stat3n":"15+","hero.stat3l":"Years of experience",
+    "hero.scroll":"Scroll down",
+
+    "about.eyebrow":"About the studio",
+    "about.title":"The new face of aesthetic design",
+    "about.p1":"Based in the heart of Baku, our studio reimagines homes, offices and commercial spaces for the city's most discerning clients. We work across a wide range of styles, from classic to contemporary minimalism.",
+    "about.p2":"Every project follows the same principle: listen first, design second, build third. Our designers, craftsmen and in-house furniture workshop work as one team, so the project stays in one set of hands from sketch to turnkey handover.",
+    "about.li1b":"Interior Design —",
+    "about.li1":"full project development from concept to 3D visualisation",
+    "about.li2b":"Furniture Production —",
+    "about.li2":"custom-made furniture and decor pieces, built to size",
+    "about.li3b":"Apartment Renovation —",
+    "about.li3":"turnkey construction and installation with design supervision",
+
+    "services.eyebrow":"What We Do",
+    "services.title":"Three services, one team",
+    "services.lead":"The entire process, from design to execution, is handled by our in-house team — no middlemen, no split responsibility.",
+    "s1.title":"Interior Design",
+    "s1.p":"Concept development, space planning and photorealistic 3D visualisation for homes, offices, restaurants and commercial venues.",
+    "s2.title":"Custom Furniture",
+    "s2.p":"Kitchen, bedroom and office furniture made in our own workshop, built to your exact dimensions and materials.",
+    "s3.title":"Apartment Renovation",
+    "s3.p":"From full-scale renovation to cosmetic refresh, construction work carried out under our own design supervision.",
+    "service.more":"Learn more",
+
+    "work.eyebrow":"Selected Projects",
+    "work.title":"From our recent work",
+    "work.lead":"From kitchens to pool decks — a glimpse from every category.",
+    "work.cat1":"Exterior","work.t1":"Garden Path, Baku",
+    "work.cat2":"Bathroom","work.t2":"Marble Suite",
+    "work.cat3":"Foyer","work.t3":"Nasimi Residence",
+    "work.cat4":"Ceiling Design","work.t4":"Classic Salon",
+    "work.cat5":"Lighting","work.t5":"Lobby Details",
+    "work.cat6":"Office","work.t6":"Executive Cabinet",
+    "work.viewall":"View all projects",
+
+    "testimonial.quote":"“Their attention to detail made our home far better than we expected. They stayed with us at every step, from sketch to the final nail.”",
+    "testimonial.cite":"— Concept Design Baku client",
+
+    "ctaband.title":"Ready to sketch your project together",
+    "ctaband.lead":"Reach out for a free initial consultation — we'll prepare a concept that fits your budget and taste.",
+    "ctaband.btn":"Get a Quote Now",
+
+    "footer.about.title":"Studio",
+    "footer.about.text":"Concept Design Baku — a full-cycle creative studio for interior design, furniture production and apartment renovation.",
+    "footer.nav.title":"Navigation",
+    "footer.services.title":"Services",
+    "footer.services.1":"Interior Design",
+    "footer.services.2":"Custom Furniture",
+    "footer.services.3":"Apartment Renovation",
+    "footer.contact.title":"Contact",
+    "footer.contact.addr":"Caspian Plaza, Baku, Azerbaijan",
+    "footer.bottom":"© 2026 Concept Design Baku. All rights reserved.",
+    "footer.credit":"Site built with demo content"
+  }
+};
+
+function applyLanguage(lang){
+  if(!translations[lang]) lang = 'az';
+  document.documentElement.lang = lang;
+  const dict = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(dict[key] !== undefined) el.textContent = dict[key];
+  });
+  document.querySelectorAll('[data-i18n-attr]').forEach(el=>{
+    const spec = el.getAttribute('data-i18n-attr');
+    spec.split(';').forEach(pair=>{
+      const [attr, key] = pair.split(':');
+      if(attr && key && dict[key] !== undefined) el.setAttribute(attr, dict[key]);
+    });
+  });
+  document.querySelectorAll('.lang-switch button').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+  localStorage.setItem('cdb_lang', lang);
+}
+
+function initLangSwitch(){
+  const saved = localStorage.getItem('cdb_lang') || 'az';
+  applyLanguage(saved);
+  document.querySelectorAll('.lang-switch button').forEach(btn=>{
+    btn.addEventListener('click', ()=> applyLanguage(btn.dataset.lang));
+  });
+}
+
+function initHeaderScroll(){
+  const header = document.querySelector('.site-header');
+  if(!header) return;
+  const onScroll = ()=> header.classList.toggle('scrolled', window.scrollY > 40);
+  onScroll();
+  window.addEventListener('scroll', onScroll, {passive:true});
+}
+
+function initMobileNav(){
+  const toggle = document.querySelector('.nav-toggle');
+  const links = document.querySelector('.nav-links');
+  if(!toggle || !links) return;
+  toggle.addEventListener('click', ()=>{
+    links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', links.classList.contains('open'));
+  });
+  links.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click', ()=> links.classList.remove('open'));
+  });
+}
+
+function animateStatNumber(el){
+  if(el.dataset.counted === '1') return;
+  el.dataset.counted = '1';
+  const text = el.textContent.trim();
+  const match = text.match(/^([\d.,]+)(.*)$/);
+  if(!match){ return; }
+  const numStr = match[0+1].replace(',', '.');
+  const suffix = match[2];
+  const end = parseFloat(numStr);
+  if(isNaN(end)) return;
+  const decimals = (numStr.split('.')[1] || '').length;
+  const duration = 1500;
+  let startTime = null;
+  el.classList.add('counting');
+  function step(ts){
+    if(!startTime) startTime = ts;
+    const progress = Math.min((ts - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = (end * eased).toFixed(decimals);
+    el.textContent = current + suffix;
+    if(progress < 1){
+      requestAnimationFrame(step);
+    } else {
+      el.textContent = numStr + suffix;
+      el.classList.remove('counting');
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+function initHeroStats(){
+  const wrap = document.querySelector('.hero-stats');
+  if(!wrap) return;
+  const numbers = wrap.querySelectorAll('strong');
+  if(!numbers.length) return;
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        numbers.forEach(animateStatNumber);
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.3});
+  io.observe(wrap);
+}
+
+function initReveal(){
+  const items = document.querySelectorAll('.reveal');
+  if(!items.length) return;
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.15});
+  items.forEach(el=> io.observe(el));
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  initLangSwitch();
+  initHeaderScroll();
+  initMobileNav();
+  initReveal();
+  initHeroStats();
+});
+
+</script>
+</body>
+</html>
